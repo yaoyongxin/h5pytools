@@ -1,18 +1,21 @@
 #!/usr/bin/env python
-import h5py, sys, pprint
+import h5py, pprint, argparse, glob
 
 
 def h5ls():
-    fname = sys.argv[1]
-    if '-g' in sys.argv:
-        group = sys.argv[sys.argv.index('-g') + 1]
-    else:
-        group = "/"
-    with h5py.File(fname, "r") as f:
-        if '-a' in sys.argv:
-            res = list(f[group].attrs)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-f", "--file", type=str, default=glob.glob("*h5")[0],
+            help="file to be checked (str)")
+    parser.add_argument("-g", "--group", type=str, default="/",
+            help="group to be checked (str)")
+    parser.add_argument("-m", "--mode", type=int, default=0,
+            help="check mode: 0->dataset; other->attributes.")
+    args = parser.parse_args()
+    with h5py.File(args.file, "r") as f:
+        if args.mode == 0:
+            res = list(f[args.group])
         else:
-            res = list(f[group])
+            res = list(f[args.group].attrs)
     pprint.pprint(res)
 
 
