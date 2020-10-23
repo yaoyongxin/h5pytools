@@ -13,18 +13,16 @@ def h5del():
             help="file to be edited (str)")
     parser.add_argument("-d", "--dataset", type=str, default="",
             help="group to be deleted (str)")
+    parser.add_argument("-a", "--attribute", type=str, default="",
+            help="attribute to be deleted (str)")
     args = parser.parse_args()
-    if args.dataset == "" or args.file == "":
-        print("nothing to be deleted.")
-        return
-    else:
-        ans = input(f"delete {args.dataset} from file {args.file}? [Y/n]")
-        if "n" in ans.lower():
-            print("nothing to be deleted.")
-            return
-    with h5py.File(args.file, "a") as f:
-        del f[args.dataset]
-        print(f"{args.dataset} deleted.")
+    if args.file != "":
+        with h5py.File(args.file, "a") as f:
+            if args.attribute != "":
+                del f[args.dataset].attrs[args.attribute]
+                print(f"f['{args.dataset}'].attrs['{args.attribute}'] deleted.")
+            else:
+                del f[args.dataset]
 
 
 if __name__ == "__main__":
