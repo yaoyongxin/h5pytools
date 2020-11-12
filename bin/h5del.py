@@ -11,7 +11,7 @@ def h5del():
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", "--file", type=str, default=h5file,
             help="file to be edited (str)")
-    parser.add_argument("-d", "--dataset", type=str, default="",
+    parser.add_argument("-d", "--dataset", type=str, default="/",
             help="group to be deleted (str)")
     parser.add_argument("-a", "--attribute", type=str, default="",
             help="attribute to be deleted (str)")
